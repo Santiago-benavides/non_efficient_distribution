@@ -1,0 +1,234 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Sep 29 17:12:50 2020
+
+@author: santi
+"""
+
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+
+os.environ["PATH"] += os.pathsep + '/usr/local/texlive/2018/bin/x86_64-darwin'
+
+"""
+ejemplo uno: señal adquirida de archivos .csv
+"""
+#ubicoción de archivo archivo .csv
+contenido=os.listdir()
+file = open('simulacion_1v2.csv', 'r')
+#almaceno datos de .csv en una lista de python
+elementos=[]
+for line in file:
+    elementos.append(line.split(','))
+file.close()
+#se definen listas con variables del archivo .csv
+t=[]  
+Sloada=[]  
+Sloadb=[] 
+Sloadc=[] 
+Mpd=[]  
+Mpq=[]  
+Mnd=[]  
+Mnq=[]  
+Mhmd=[]  
+Mhmq=[]  
+Sfa=[]  
+Sfb=[]  
+Sfc=[]  
+Sa=[]  
+Sb=[]  
+Sc=[]  
+Spdo=[]  
+Spqo=[]  
+Sndo=[]  
+Snqo=[]  
+Shmdo=[]  
+Shmqo=[]  
+Spd=[]  
+Spq=[]  
+Snd=[]  
+Snq=[]  
+Shmd=[]  
+Shmq=[]
+Va=[]
+#inicia el while en 1 para quitar los nombres del archivo .csv y convierte
+#los datos de cadena a flotante
+n=1
+while n<len(elementos):
+    #selección de datos en archivos
+    # t.append(float(elementos[n][0]))
+    t.append(float(elementos[n][0]))  
+    Sloada.append(float(elementos[n][1]))  
+    Sloadb.append(float(elementos[n][2])) 
+    Sloadc.append(float(elementos[n][3])) 
+    Mpd.append(float(elementos[n][4]))  
+    Mpq.append(float(elementos[n][5])) 
+    Mnd.append(float(elementos[n][6]))  
+    Mnq.append(float(elementos[n][7]))  
+    Mhmd.append(float(elementos[n][8]))   
+    Mhmq.append(float(elementos[n][9]))   
+    Sfa.append(float(elementos[n][10]))   
+    Sfb.append(float(elementos[n][11]))   
+    Sfc.append(float(elementos[n][12]))   
+    Sa.append(float(elementos[n][13]))   
+    Sb.append(float(elementos[n][14]))   
+    Sc.append(float(elementos[n][15]))   
+    Spdo.append(float(elementos[n][16]))   
+    Spqo.append(float(elementos[n][17]))   
+    Sndo.append(float(elementos[n][18]))   
+    Snqo.append(float(elementos[n][19]))   
+    Shmdo.append(float(elementos[n][20]))   
+    Shmqo.append(float(elementos[n][21]))   
+    Spd.append(float(elementos[1][22]))  
+    Spq.append(float(elementos[n][23]))   
+    Snd.append(float(elementos[n][24]))   
+    Snq.append(float(elementos[n][25]))  
+    Shmd.append(float(elementos[n][26]))  
+    Shmq.append(float(elementos[n][27]))   
+    Va.append(float(elementos[n][28]))   
+    n=n+1
+
+
+#graficado de señales csv
+limsupyIr=max([max(Sfa),max(Sfb),max(Sfc)])
+limminyIr=min([min(Sfa),min(Sfb),min(Sfc)])
+limsupyIl=max([max(Sloada),max(Sloadb),max(Sloadc)])
+limminyIl=min([min(Sloada),min(Sloadb),min(Sloadc)])
+limsupyIc=max([max(Sa),max(Sb),max(Sc)])
+limminyIc=min([min(Sa),min(Sb),min(Sc)])
+VaIr=[]
+VaIl=[]
+VaIc=[]
+
+n=0
+while n<len(Va):
+
+    VaIr.append(Va[n]*limsupyIr*1.3/max(Va))
+    VaIl.append(Va[n]*limsupyIl*1.3/max(Va))
+    VaIc.append(Va[n]*limsupyIc*1.3/max(Va))
+    n=n+1
+  
+plt.close("all")
+    
+sizeLegend=13
+sizeMarc=19
+fontlabels=15
+ubic=1
+plt.figure(1,figsize=[8.6,17.3])
+
+
+
+plt.subplot(6,1,1)
+limsupy=max([max(Sloada),max(Sloadb),max(Sloadc)])
+limminy=min([min(Sloada),min(Sloadb),min(Sloadc)])
+plt.plot(t,Sloada, label="$I_A$ $L$= "+str(round(max(Sloada[int(len(t)/4):]),2)))
+plt.plot(t,Sloadb, label="$I_B$ $L$= "+str(round(max(Sloadb[int(len(t)/4):]),2)))
+plt.plot(t,Sloadc, label="$I_C$ $L$= "+str(round(max(Sloadc[int(len(t)/4):]),2)))
+plt.plot(t,VaIl,'--',color="#c0c0c0",label="$V_A$")
+plt.ylabel("Load \nCurrent (A)", fontsize=fontlabels)
+# plt.xlabel("tiempo (s)")
+plt.xticks(fontsize=1)
+plt.yticks(fontsize=15)
+plt.ylim(1.45*limminy, limsupy*1.65)
+plt.legend(loc=ubic, prop={'size': sizeLegend})
+plt.grid()
+plt.text(-max(t)/5,-limsupy*1.85, "a)", size=sizeMarc )
+
+plt.subplot(6,1,2)
+limsupy=max([max(Mpd),max(Mpq),max(Mnd),max(Mnq),max(Mhmd),max(Mhmq)])
+limminy=min([min(Mpd),min(Mpq),min(Mnd),min(Mnq),min(Mhmd),min(Mhmq)])
+plt.plot(t,Mpd, label="$CR_1$ $L$= "+str(round((Mpd[-1]),2)))
+plt.plot(t,Mpq, label="$CR_2$ $L$= "+str(round((Mpq[-1]),2)))
+plt.plot(t,Mnd, label="$CR_3$ $L$= "+str(round((Mnd[-1]),2)))
+plt.plot(t,Mnq, label="$CR_4$ $L$= "+str(round((Mnq[-1]),2)))
+plt.plot(t,Mhmd, label="$CR_5$ $L$= "+str(round((Mhmd[-1]),2)))
+plt.plot(t,Mhmq, label="$CR_6$ $L$= "+str(round((Mhmq[-1]),2)))
+plt.ylabel("$CR$ Load \nCurrent (A)", fontsize=fontlabels)
+# plt.xlabel("tiempo (s)")
+plt.xticks(fontsize=1)
+plt.yticks(fontsize=15)
+plt.ylim(1.2*limminy, limsupy*1.65)
+plt.legend(loc=ubic, prop={'size': sizeLegend})
+plt.grid()
+plt.text(-max(t)/5,-limsupy*2.2, "b)", size=sizeMarc )
+
+plt.subplot(6,1,3)
+limsupy=max([max(Sa),max(Sb),max(Sc)])
+limminy=min([min(Sa),min(Sb),min(Sc)])
+plt.plot(t,Sa, label="$I_A$ $EG$= "+str(round(max(Sa[int(len(t)/4):]),2)))
+plt.plot(t,Sb, label="$I_B$ $EG$= "+str(round(max(Sb[int(len(t)/4):]),2)))
+plt.plot(t,Sc, label="$I_C$ $EG$= "+str(round(max(Sc[int(len(t)/4):]),2)))
+plt.plot(t,VaIc,'--',color="#c0c0c0",label="$V_A$")
+plt.ylabel("EG \nCurrent (A)", fontsize=fontlabels)
+# plt.xlabel("tiempo (s)")
+plt.xticks(fontsize=1)
+plt.yticks(fontsize=15)
+plt.ylim(1.52*limminy, limsupy*1.75)
+plt.legend(loc=ubic, prop={'size': sizeLegend})
+plt.grid()
+plt.text(-max(t)/5,-limsupy*1.75, "c)", size=sizeMarc )
+
+plt.subplot(6,1,4)
+limsupy=max([max(Spd),max(Spq),max(Snd),max(Snq),max(Shmd),max(Shmq)])
+limminy=min([min(Spd),min(Spq),min(Snd),min(Snq),min(Shmd),min(Shmq)])
+plt.plot(t,Spd, label="$CR_1$ $EG$= "+str(round((Spd[-1]),2)))
+plt.plot(t,Spq, label="$CR_2$ $EG$= "+str(round((Spq[-1]),2)))
+plt.plot(t,Snd, label="$CR_3$ $EG$= "+str(round((Snd[-1]),2)))
+plt.plot(t,Snq, label="$CR_4$ $EG$= "+str(round((Snq[-1]),2)))
+plt.plot(t,Shmd, label="$CR_5$ $EG$= "+str(round((Shmd[-1]),2)))
+plt.plot(t,Shmq, label="$CR_6$ $EG$= "+str(round((Shmq[-1]),2)))
+plt.ylabel("$CR$ EG \nCurrent (A)", fontsize=fontlabels)
+# plt.xlabel("tiempo (s)")
+plt.xticks(fontsize=1)
+plt.yticks(fontsize=15)
+plt.ylim(1.2*limminy, limsupy*1.5)
+plt.legend(loc=ubic, prop={'size': sizeLegend})
+plt.grid()
+plt.text(-max(t)/5,-limsupy*3.5, "d)", size=sizeMarc )
+
+plt.subplot(6,1,5)
+limsupy=max([max(Sfa),max(Sfb),max(Sfc)])
+limminy=min([min(Sfa),min(Sfb),min(Sfc)])
+plt.plot(t,Sfa, label="$I_A$ $G$= "+str(round(max(Sfa[int(len(t)/4):]),2)))
+plt.plot(t,Sfb, label="$I_B$ $G$= "+str(round(max(Sfb[int(len(t)/4):]),2)))
+plt.plot(t,Sfc, label="$I_C$ $G$= "+str(round(max(Sfc[int(len(t)/4):]),2)))
+plt.plot(t,VaIr,'--',color="#c0c0c0",label="$V_a$")
+plt.ylabel("Grid \nCurrent (A)", fontsize=fontlabels)
+# plt.xlabel("tiempo (s)")
+plt.xticks(fontsize=1)
+plt.yticks(fontsize=15)
+plt.ylim(1.55*limminy, limsupy*1.755)
+plt.legend(loc=ubic, prop={'size': sizeLegend})
+plt.grid()
+plt.text(-max(t)/5,-limsupy*1.65, "e)", size=sizeMarc )
+
+plt.subplot(6,1,6)
+limsupy=max([max(Spdo),max(Spqo),max(Sndo),max(Snqo),max(Shmdo),max(Shmqo)])
+limminy=min([min(Spdo),min(Spqo),min(Sndo),min(Snqo),min(Shmdo),min(Shmqo)])
+plt.plot(t,Spdo, label="$CR_1$ $G$= "+str(round((Spdo[-1]),2)))
+plt.plot(t,Spqo, label="$CR_2$ $G$= "+str(round((Spqo[-1]),2)))
+plt.plot(t,Sndo, label="$CR_3$ $G$="+str(round((Sndo[-1]),2)))
+plt.plot(t,Snqo, label="$CR_4$ $G$= "+str(round((Snqo[-1]),2)))
+plt.plot(t,Shmdo, label="$CR_5$ $G$= "+str(round((Shmdo[-1]),2)))
+plt.plot(t,Shmqo, label="$CR_6$ $G$= "+str(round((Shmqo[-1]),2)))
+plt.ylabel("$CR$ Grid \nCurrent (A)", fontsize=fontlabels)
+plt.xlabel("time (s)", fontsize=fontlabels)
+plt.xticks(fontsize=15)
+plt.yticks(fontsize=15)
+print(1.8*limminy)
+plt.ylim(2.5*limminy, limsupy*1.5)
+plt.legend(loc=ubic, prop={'size': sizeLegend})
+plt.grid()
+plt.text(-max(t)/5,-limsupy*1.3, "f)", size=sizeMarc )
+
+
+plt.savefig("s1_01_carga_fuente_red.pdf")
+
+
+
+
+
+
+
